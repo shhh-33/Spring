@@ -6,21 +6,114 @@ import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import com.sesac.springBootMVCProject.repository.BoardRepository;
 import com.sesac.springBootMVCProject.vo.BoardVO;
 
+import oracle.net.aso.b;
+
 @SpringBootTest
 public class BoardTest {
 
-	@Autowired
-	BoardRepository bRepo;
+	@Autowired // new해서 들어오는거
 
+	BoardRepository bRepo;
+	/*
+	 * @Test public void findByFirstnameLike() { String writer = "제갈";
+	 * bRepo.findByFirstnameLike(writer).forEach(board -> {
+	 * System.out.println(board); });
+	 * 
+	 * }
+	 */
+	/*
+	 * @Test public void pagingTest3() { Pageable paging= PageRequest.of(0, 10,
+	 * Sort.by("bno").descending()); Page<BoardVO> result =
+	 * bRepo.findByBnoGraterThan(10L, paging);
+	 * 
+	 * List<BoardVO> blist = result.getContent(); System.out.println("page size"
+	 * +result.getSize()); System.out.println("page getTotalPages"
+	 * +result.getTotalPages()); System.out.println("page getTotalElements"
+	 * +result.getTotalElements());
+	 * System.out.println("다음페이지정보"+result.nextPageable());
+	 * 
+	 * blist.forEach(b->{ System.out.println(b); }); }
+	 */
+	
 	@Test
-	public void findByFirstnameLike() {
-		String writer = "제갈";
-		bRepo.findByFirstnameLike(writer).forEach(board -> {
-			System.out.println(board);
+	public void jpalTest1() {
+		bRepo.findByTitle5(10L,"화려한").forEach(b->{
+			System.out.println(b);
+		});
+		
+	}
+	
+	
+	
+	//@Test
+	   public void pageTest3() {
+	      Pageable paging = PageRequest.of(0, 10, Sort.by("bno").descending());
+	      Page<BoardVO> result = bRepo.findByBnoGreaterThan(10L, paging);
+	      //페이지 정보를 알아야하니까 page 타입으로 리턴한다.
+	      
+	      List<BoardVO> blist = result.getContent();
+	      System.out.println("page size : " + result.getSize());
+	      System.out.println("page TotalElements : " + result.getTotalElements());
+	      System.out.println("page TotalPage : " + result.getTotalPages());
+	      System.out.println("다음 Page 정보 : " + result.nextPageable());
+	      System.out.println("nextOrLastPageable : " + result.nextOrLastPageable());
+	      
+	      blist.forEach(b->{
+	         System.out.println(b);
+	      });
+	   }
+	   
+
+	
+	
+	
+	//@Test
+	public void pagingTest2() {
+		IntStream.range(0, 10).forEach(p -> {//for문돌리면서 전체 다 출력 p : 0~10-
+			System.out.println("=====" + p + "페이지======"); //
+			Pageable paging = PageRequest.of(p, 10, Sort.by("bno").descending()); // 100번~91번
+			bRepo.findAll(paging).forEach(b -> {
+				System.out.println(b);
+			});
+
+		});
+	}
+
+	// @Test
+	public void pageTest1() {
+		String content = "빛";
+		Pageable paging = PageRequest.of(2, 5, Sort.by(Sort.Direction.DESC, "bno")); // 페이징 다섯개단위
+		bRepo.findByContentContaining(content, paging).forEach(b -> {
+			System.out.println(b);
+		});
+	}
+
+	/*
+	 * select * from ( select row_.*, rownum rownum_ from ( select boardvo0_.bno as
+	 * bno1_0_, boardvo0_.content as content2_0_, boardvo0_.regdate as regdate3_0_,
+	 * boardvo0_.title as title4_0_, boardvo0_.updatedate as updatedate5_0_,
+	 * boardvo0_.writer as writer6_0_ from tbl2_boards boardvo0_ where
+	 * boardvo0_.content like ? escape ? order by boardvo0_.bno desc ) row_ where
+	 * rownum <= ?) where rownum_ > ?
+	 * 
+	 * 
+	 */
+
+	// @Test
+	public void test33() {
+
+		String content = "빛";
+		Long bno = 10L;
+		bRepo.findByContentContainingAndBnoGreaterThanOrderByBnoDesc(content, bno).forEach(b -> {
+			System.out.println(b);
 		});
 
 	}

@@ -17,12 +17,7 @@ public class RestfullController {
 	@Autowired
 	BoardRepository bRepo;
 	
-	
-	
-	
-	
-	
-	
+
 	
 	@RequestMapping("/board/list2")
 	public Iterable<BoardVO> selectByWriter(String writer){
