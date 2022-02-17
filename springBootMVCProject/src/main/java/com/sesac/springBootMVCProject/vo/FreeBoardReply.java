@@ -47,4 +47,5 @@ public class FreeBoardReply implements Serializable{
 	@ManyToOne //댓글여러개는 한개의 board와 연관관계
 	FreeBoard board;  //board_bno칼럼이 생성 
 	
+	
 }

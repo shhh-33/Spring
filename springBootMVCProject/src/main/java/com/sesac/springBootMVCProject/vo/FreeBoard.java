@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -25,9 +26,12 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
+
+
+//boardVO
 @Getter
 @Setter
-@ToString(exclude = "replies")
+@ToString(exclude = "replies") //제외할거야
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,10 +53,17 @@ public class FreeBoard  {
 	@UpdateTimestamp
 	private Timestamp updatedate;	
 	
+	
+	@BatchSize(size=100) //성능좋아져
+	
+	//1:N 일대다 (1이 주인 N에 외래키)
+	/*
+	 * EAGER : 연관 관계에 있는 Entity 들 모두 가져온다 select 한번에 (board를 가져올 때 replies도 가져옴)
+	 * LAZY : 엔티티 사용할때만 해당 엔티티 조회-getter 로 접근할 때 가져온다 (board만 가져올때)
+	 * 
+	 */
 	@OneToMany(mappedBy = "board", 
-			  cascade = CascadeType.ALL  , fetch = FetchType.LAZY
-			  
-			)  
+			  cascade = CascadeType.ALL  , fetch = FetchType.EAGER )  
 	List<FreeBoardReply> replies;
 	
 	
