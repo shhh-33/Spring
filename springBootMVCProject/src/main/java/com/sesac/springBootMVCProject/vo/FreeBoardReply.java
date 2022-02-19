@@ -26,7 +26,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(exclude = "board") //양방향일때 무한loop주의 
-@EqualsAndHashCode(of="rno")
+@EqualsAndHashCode(of="rno") //참조할때
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,13 +35,13 @@ import lombok.ToString;
 public class FreeBoardReply implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)//oracle:sequence, mysql:identity
-	Long rno;
-	String reply;
-	String replyer;
+	Long rno; //댓글번호
+	String reply; //댓글내용
+	String replyer; //작성자
 	@CreationTimestamp
-	Timestamp regdate;
+	Timestamp regdate; //등록일
 	@UpdateTimestamp
-	Timestamp updatedate;
+	Timestamp updatedate; //수정일 
 	
 	@JsonIgnore
 	@ManyToOne //댓글여러개는 한개의 board와 연관관계

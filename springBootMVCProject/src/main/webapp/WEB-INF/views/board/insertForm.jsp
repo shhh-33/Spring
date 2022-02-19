@@ -15,7 +15,7 @@ th {
 	text-align: center;
 }
 </style>
-<title>Insert title here</title>
+<title>Insert</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script
@@ -27,7 +27,7 @@ th {
 
 </head>
 <body>
-	<h1>게시글 등록하기</h1>
+	<h1>๑새글등록๑</h1>
 	<!-- readonly="readonly" -->
 	<form action="insert" method="post">
 
@@ -46,13 +46,9 @@ th {
 
 		<div class="form-group">
 			
-			<input type="submit" value="입력">
+			<input type="submit" value="등록">
 			
-
 		</div>
-
-
 	</form>
-	
 </body>
 </html>

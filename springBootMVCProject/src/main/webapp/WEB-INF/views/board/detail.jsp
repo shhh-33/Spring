@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,14 +31,17 @@ th {
 	<h1>✿ʕ•ﻌ•ʔ게시글상세보기ʕ•ﻌ•ʔ✿</h1>
 	<!-- readonly="readonly" -->
 	<form action="update" method="post">
+	         <!--model.addAttribute("board",~)  -->
 		<div class="form-group">
-			<!-- 수정할필요없어서 그치만 반드시 넘겨야 -->
+			<!-- 수정할필요없으니 hidden, 그치만 반드시 넘겨야 -->
 			<input type="hidden" class="form-control" id="bno" name="bno"
 				value="${board.bno}">
 		</div>
+	
 		<div class="form-group">
 			<label for="title">title</label> <input type="text"
 				class="form-control" id="title" name="title" value="${board.title}">
+				                                         <!--value로 원래적혔던거 받아옴--> 
 		</div>
 		<div class="form-group">
 			<label for="writer">writer</label> <input type="text"
@@ -51,11 +55,11 @@ th {
 		</div>
 
 		<div class="form-group">
-			<!--submit은 여러개일수 없어  -->
+			<!--submit은 여러개일수없다 //action에서 update로 간다고 해놓음 -->
 			<input type="submit" value="수정">
-			<!-- action에 update로 간다고 해놓음 ->컨트롤러 고치기 -->
-			<input type="button" id="delButton" value="삭제"> <input
-				type="button" id="listButton" value="조회">
+		
+			<input type="button" id="delButton" value="삭제"> 
+			<input type="button" id="listButton" value="목록">
 
 		</div>
 
@@ -70,6 +74,8 @@ th {
 			class="btn btn-warning pull-right" id="addReply" data-msg="add"
 			data-myname="jin">댓글추가</button>
 	</div>
+
+
 
 	<hr>
 	<!--댓글  -->
@@ -87,9 +93,50 @@ th {
 		</tbody>
 	</table>
 
+
+<!-- 페이지 이동 처리 -->
+	<nav>
+		<div>
+			<ul class="pagination">
+
+				<!--이전 페이지  -->
+				<c:if test="${rlist.prevPage}">
+				<!--li : 페이지 누르는 버튼  -->
+					<li class="page-item"><a href="${rlist.prevPage.pageNumber+1}">PREV${rlist.prevPage.pageNumber+1}</a>
+					</li>
+				</c:if>
+				<!--리스트  -->
+				<c:forEach items="${rlist.pageList}" var="p">
+					<li class="page-item"
+						class="${p.pageNumber==rlist.currentPageNum-1}?active:''"><a
+						href="${p.pageNumber}">${p.pageNumber+1}</a></li>
+				</c:forEach>
+				<!--다음 페이지  -->
+				<c:if test="${rlist.nextPage}">
+					<li class="page-item"><a href="${rlist.nextPage.pageNumber+1}">NEXT${rlist.nextPage.pageNumber+1}</a>
+					</li>
+				</c:if>
+
+			</ul>
+		</div>
+	</nav>
+	
+	<!--페이지 이동을 위한 form 추가  -->
+	<!--현재 페이지 다시 조회하러 action list  -->
+	<form id="f1" action="list" method="get">
+		<input type="text" name="page" value="${rlist.currentPageNum}">
+		<input type="text" name="size" value="${rlist.currentPage.pageSize}">
+	</form>
+
+
+
+
+
+
+
+
 	<div id="myModal" class="modal fade " role="dialog">
 		<div class="model_dialog">
-			Modal content
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -115,16 +162,16 @@ th {
 
 
 
-
+<!--댓글 스크립트  -->
 	<script>
-        $.ajax({
+         $.ajax({
               url:"/myapp/replies/list/" +${board.bno},
               success:function(responseData){
-                  alert(responseData);
+                 // alert(responseData);
                   //console.log(responseData);
                   printList(responseData);
                   }
-            });
+            }); 
 
 	function printList(arr){
 		  var str="";
@@ -140,22 +187,28 @@ th {
 		}
 	
 	</script>
+	
+	
 	<script>
       $(function() {
+         //삭제 버튼
          $("#delButton").click(function() {
             if (confirm("삭제하시겠습니까?")) {
                location.href = "delete?bno=${board.bno}"; //href겟방식 
           $
             }
          });
-  
+
+
+        //목록버튼 
          $("#listButton").click(function() {
-            location.href = "list";
+            location.href = "list?page=0&size=10"; //1페이지로 가게 하려고
          });
 
-         
+
+         //댓글추가버튼
          $("#modalSaveBtn").click(function(){
-				alert("저장해줄게" + $("textarea[name='reply']").val())
+				//alert("저장해줄게" + $("textarea[name='reply']").val())
 		    	var replyText = $("textarea[name='reply']").val();
 		    	var replyer = $("input[name='replyer']").val();
 		    	var obj={
@@ -172,7 +225,7 @@ th {
      			dataType: "json",
      			contentType: "application/json",
                  success:function(responseData){
-                     alert(responseData);
+                     //alert(responseData);
                      printList(responseData);
                  }
 			    });
