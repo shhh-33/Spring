@@ -1,0 +1,52 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Thymeleaf3</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<!-- th:with를 이용하여 targeer이란 이름의 변수작성 table태그 내에서만 유효한 지역변수 
+       값이'u0001'인 사용자만 다른 내용으로 출력하려고
+       3항연산자 사용해 SECRET으로 출력  -->
+	<table border="1" th:with="target='u0001'">
+		<tr>
+			<td>MID</td>
+			<td>MNAME</td>
+			<td>REGDATE</td>
+		</tr>
+
+		<tr th:each="member : ${list}">
+			<td th:text="${member.mid == target ?'SECRET':member.mid }"></td>
+			<td th:text="${member.mname}"></td>
+			<td th:text="${#dates.format(member.regdate, 'yyyy-MM-dd')}"></td>
+		</tr>
+
+	</table>
+
+
+	<!--th:if ~ th:unless 이용한 if else   -->
+	<table border="1" th:with="target='u0001'">
+		<tr>
+			<td>MID</td>
+			<td>MNAME</td>
+			<td>REGDATE</td>
+		</tr>
+
+		<tr th:each="member : ${list}">
+			<td th:if="${member.mid}">
+			<a href="/modify" th:if="${member.mid == target}">MODIFY</a>
+			<p th:unless="${member.mid == target}">VIEW</p></td>
+			
+			<td th:text="${member.mname}"></td>
+			<td th:text="${#dates.format(member.regdate, 'yyyy-MM-dd')}"></td>
+		</tr>
+
+	</table>
+
+
+
+
+
+</body>
+</html>
