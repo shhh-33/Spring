@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<settings>
+  <setting name="logImpl" value="LOG4J"/>
+  <setting name="jdbcTypeForNull" value="NULL"/>
+</settings>
+
+
+   <!--별칭  -->
+	<typeAliases>
+		<typeAlias type="kr.co.sasac.vo.BoardVO" alias="boardVO" />
+		<typeAlias type="kr.co.sasac.vo.MemberVO" alias="memberVO" />
+		<typeAlias type="kr.co.sasac.vo.LoginVO" alias="loginVO" />
+	</typeAliases>
+	
+</configuration>
