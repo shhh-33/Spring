@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sesac.member">
+
+
+	<select id="selectAll" resultType="memberVO">
+		select * from tbl_member
+	</select>
+
+	<select id="selectById" parameterType="string"
+		resultType="memberVO">
+		select * from tbl_member where id = #{aa}
+	</select>
+
+	<insert id="insert" parameterType="memberVO">
+		insert into tbl_member values(#{id},#{name},#{password},#{email_id},#{email_domain},
+		#{tel1},#{tel2},#{tel3},#{post},#{basic_addr},#{detail_add},#{type},sysdate);
+	</insert>
+
+   <update id ="update" parameterType="memberVO">
+   update tbl_member
+    set name=#{name},
+    password=#{password},
+    email_id=#{email_id},
+    email_domain= #{email_domain},
+	tel1=#{tel1},
+	tel2= #{tel2},
+	tel3=#{tel3},
+	post=#{post},
+	basic_addr=#{basic_addr},
+	detail_add=	#{detail_add},
+	type= #{type}
+   where id =#{id}
+   </update>
+   
+   <delete id="delete" parameterType="string">
+    delete form tbl_member where id =#{id}
+   </delete>
+   
+</mapper>
+<!-- sql id를 이름으로 써 .. namespace로 구분 -->
